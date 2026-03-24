@@ -28,21 +28,12 @@ class AuthService(
         // Ambil data request
         val request = call.receive<AuthRequest>()
         
-        // DEBUG: Log request
-        println("===== REGISTER REQUEST =====")
-        println("name: '${request.name}'")
-        println("fullName: '${request.fullName}'")
-        println("username: '${request.username}'")
-        println("email: '${request.email}'")
-        println("password: '${request.password}'")
-        println("Request toMap: ${request.toMap()}")
-        println("=============================")
-
-        // Validasi request
+        // Gunakan ValidatorHelper untuk validasi yang lebih lengkap
         val validator = ValidatorHelper(request.toMap())
-        validator.required("fullName", "Nama tidak boleh kosong")
+        validator.required("fullName", "Nama lengkap tidak boleh kosong")
         validator.required("username", "Username tidak boleh kosong")
         validator.required("email", "Email tidak boleh kosong")
+        validator.email("email", "Format email tidak valid")
         validator.required("password", "Password tidak boleh kosong")
         validator.minLength("password", 6, "Password minimal 6 karakter")
         validator.validate()
@@ -50,27 +41,24 @@ class AuthService(
         // periksa user dengan username
         val existUserUsername = userRepository.getByUsername(request.username)
         if (existUserUsername != null) {
-            throw AppException(
-                409,
-                "Username ini sudah terdaftar!"
-            )
+            throw AppException(409, "Username sudah digunakan")
         }
 
         // periksa user dengan email
         val existUserEmail = userRepository.getByEmail(request.email)
         if (existUserEmail != null) {
-            throw AppException(
-                409,
-                "Email ini sudah terdaftar!"
-            )
+            throw AppException(409, "Email sudah digunakan")
         }
 
-        request.password = hashPassword(request.password)
-        val userId = userRepository.create(request.toEntity())
+        // Hash password
+        val hashedPassword = hashPassword(request.password)
+        val userToCreate = request.toEntity().copy(password = hashedPassword)
+        
+        val userId = userRepository.create(userToCreate)
 
         val response = DataResponse(
             "success",
-            "Berhasil melakukan pendaftaran",
+            "Registrasi berhasil",
             mapOf(Pair("userId", userId))
         )
         call.respond(response)
