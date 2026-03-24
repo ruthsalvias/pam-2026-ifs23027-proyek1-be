@@ -34,6 +34,7 @@ class AuthService(
         validator.required("username", "Username tidak boleh kosong")
         validator.required("email", "Email tidak boleh kosong")
         validator.required("password", "Password tidak boleh kosong")
+        validator.minLength("password", 6, "Password minimal 6 karakter")
         validator.validate()
 
         // periksa user dengan username
