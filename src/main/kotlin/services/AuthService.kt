@@ -27,6 +27,16 @@ class AuthService(
     suspend fun postRegister(call: ApplicationCall) {
         // Ambil data request
         val request = call.receive<AuthRequest>()
+        
+        // DEBUG: Log request
+        println("===== REGISTER REQUEST =====")
+        println("name: '${request.name}'")
+        println("fullName: '${request.fullName}'")
+        println("username: '${request.username}'")
+        println("email: '${request.email}'")
+        println("password: '${request.password}'")
+        println("Request toMap: ${request.toMap()}")
+        println("=============================")
 
         // Validasi request
         val validator = ValidatorHelper(request.toMap())

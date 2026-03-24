@@ -46,7 +46,10 @@ class ValidatorHelper(private val data: Map<String, Any?>) {
 
     fun validate() {
         if (errors.isNotEmpty()) {
-            throw AppException(400, errors.joinToString("|"))
+            println("===== VALIDATION ERRORS =====")
+            errors.forEach { println(it) }
+            println("=============================")
+            throw AppException(400, errors.joinToString("|\n"))
         }
     }
 }
