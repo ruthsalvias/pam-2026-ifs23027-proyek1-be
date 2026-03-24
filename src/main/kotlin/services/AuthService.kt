@@ -30,7 +30,7 @@ class AuthService(
 
         // Validasi request
         val validator = ValidatorHelper(request.toMap())
-        validator.required("name", "Nama tidak boleh kosong")
+        validator.required("fullName", "Nama tidak boleh kosong")
         validator.required("username", "Username tidak boleh kosong")
         validator.required("email", "Email tidak boleh kosong")
         validator.required("password", "Password tidak boleh kosong")
