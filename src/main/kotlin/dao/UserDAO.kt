@@ -9,7 +9,7 @@ import java.util.UUID
 class UserDAO(id: EntityID<UUID>) : Entity<UUID>(id) {
     companion object : EntityClass<UUID, UserDAO>(UserTable)
 
-    var name by UserTable.name
+    var fullName by UserTable.name
     var username by UserTable.username
     var email by UserTable.email
     var password by UserTable.password

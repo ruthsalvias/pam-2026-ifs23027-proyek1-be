@@ -20,7 +20,7 @@ data class AuthRequest(
         // Gunakan fullName jika name kosong
         val finalName = if (name.isNotBlank()) name else fullName
         return mapOf(
-            "name" to finalName,
+            "fullName" to finalName,
             "username" to username,
             "email" to email,
             "password" to password,
@@ -35,7 +35,7 @@ data class AuthRequest(
         // Gunakan fullName jika name kosong
         val finalName = if (name.isNotBlank()) name else fullName
         return User(
-            name = finalName,
+            fullName = finalName,
             username = username,
             email = email,
             password = password,

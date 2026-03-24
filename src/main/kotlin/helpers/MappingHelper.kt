@@ -16,7 +16,7 @@ suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
 
 fun userDAOToModel(dao: UserDAO) = User(
     id = dao.id.value.toString(),
-    name = dao.name,
+    fullName = dao.fullName,
     username = dao.username,
     email = dao.email,
     password = dao.password,

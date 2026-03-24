@@ -36,7 +36,7 @@ class UserRepository : IUserRepository {
 
     override suspend fun create(user: User): String = suspendTransaction {
         val userDAO = UserDAO.new {
-            name = user.name
+            fullName = user.fullName
             username = user.username
             email = user.email
             password = user.password
@@ -58,7 +58,7 @@ class UserRepository : IUserRepository {
             .firstOrNull()
 
         if (userDAO != null) {
-            userDAO.name = newUser.name
+            userDAO.fullName = newUser.fullName
             userDAO.username = newUser.username
             userDAO.email = newUser.email
             userDAO.password = newUser.password

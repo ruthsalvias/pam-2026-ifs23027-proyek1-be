@@ -36,7 +36,7 @@ class UserService(
             mapOf(
                 "user" to UserResponse(
                     id = user.id,
-                    name = user.name,
+                    fullName = user.fullName,
                     username = user.username,
                     photo = user.photo,
                     about = user.about,
@@ -57,7 +57,7 @@ class UserService(
 
         // Validasi request
         val validator = ValidatorHelper(request.toMap())
-        validator.required("name", "Nama tidak boleh kosong")
+        validator.required("fullName", "Nama tidak boleh kosong")
         validator.required("username", "Username tidak boleh kosong")
         validator.validate()
 
@@ -70,8 +70,10 @@ class UserService(
             )
         }
 
+        // Gunakan fullName jika name kosong
+        val finalName = if (request.name.isNotBlank()) request.name else request.fullName
         user.username = request.username
-        user.name = request.name
+        user.fullName = finalName
         user.about = request.about
         val isUpdated = userRepo.update(
             user.id,
