@@ -7,6 +7,7 @@ import org.delcom.entities.User
 @Serializable
 data class AuthRequest(
     var name: String = "",
+    var fullName: String = "",  // Tambahan untuk kompatibilitas frontend
     var username: String = "",
     var email: String = "",
     var password: String = "",
@@ -16,8 +17,10 @@ data class AuthRequest(
     var link: String? = null,
 ){
     fun toMap(): Map<String, Any?> {
+        // Gunakan fullName jika name kosong
+        val finalName = if (name.isNotBlank()) name else fullName
         return mapOf(
-            "name" to name,
+            "name" to finalName,
             "username" to username,
             "email" to email,
             "password" to password,
@@ -29,15 +32,17 @@ data class AuthRequest(
     }
 
     fun toEntity(): User {
+        // Gunakan fullName jika name kosong
+        val finalName = if (name.isNotBlank()) name else fullName
         return User(
-            name = name,
+            name = finalName,
             username = username,
             email = email,
             password = password,
             about = about,
             location = location,
             link = link,
-            updatedAt = Clock.System.now()
+            updatedAt = kotlinx.datetime.Clock.System.now()
         )
     }
 
